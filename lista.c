@@ -1,7 +1,6 @@
 /*
  * CT60A0210 Käytännön ohjelmointi -kurssin ohjelmien otsikkotiedot.
  * Tekijä: Camilla Piskonen
- * Opiskelijanumero: 0451801
  * Päivämäärä: 12.3.16
  * Yhteistyö ja lähteet, nimi ja yhteistyön muoto: harkat, Essi Rautasalo
  */
