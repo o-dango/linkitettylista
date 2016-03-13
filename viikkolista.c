@@ -2,7 +2,7 @@
  * CT60A0210 Käytännön ohjelmointi -kurssin ohjelmien otsikkotiedot.
  * Tekijä: Camilla Piskonen
  * Päivämäärä: 12.3.16
- * Yhteistyö ja lähteet, nimi ja yhteistyön muoto: harkat, http://en.cppreference.com/w/c/string/byte/strtok
+ * Yhteistyö ja lähteet, nimi ja yhteistyön muoto: Pera Juvonen, harkat, http://en.cppreference.com/w/c/string/byte/strtok
  */
 
  #include <stdio.h>
@@ -21,17 +21,14 @@
 
 typedef struct ajoneuvo *ajoneuvoOsoitin;
 
+
+
 int varaaMuistia(ajoneuvoOsoitin *pA, char *merkki, int vuosi) {
 
     struct ajoneuvo *ptrUusi = NULL;
     struct ajoneuvo *ptr = NULL;
 
-    printf("Muistinvarauksessa\n");
-    printf("%s,%d\n", merkki, vuosi);
-
     if ((ptrUusi=(struct ajoneuvo*)malloc(sizeof(struct ajoneuvo))) == NULL ) {
-
-        printf("Virheentarkistus muistissa\n");
 
         return 1;
 
@@ -39,32 +36,21 @@ int varaaMuistia(ajoneuvoOsoitin *pA, char *merkki, int vuosi) {
 
     else {
 
-        printf("oikeesti varataan muistia\n");
         ptrUusi->autoMerkki = malloc(sizeof(*merkki));
-        printf("varattiin vähän lisää\n");
         strcpy(ptrUusi->autoMerkki, merkki);
-
         ptrUusi->vuosiMalli = vuosi;
-
         ptrUusi->seuraava = NULL;
 
 
         if (*pA == NULL) {
 
-            printf("alun säätö\n");
-
-            printf("%s,%d\n", ptrUusi->autoMerkki, ptrUusi->vuosiMalli);
-            perror("alkuhelvetti");
             *pA = ptrUusi;
-            perror("helvetti");
 
         }
 
         else {
-            printf("asd4\n");
-            ptr = *pA;
 
-            printf("Muun säätö\n");
+            ptr = *pA;
 
             while ( ptr->seuraava != NULL) {
 
@@ -72,10 +58,8 @@ int varaaMuistia(ajoneuvoOsoitin *pA, char *merkki, int vuosi) {
 
 
             }
-            printf("asd7\n");
+
             ptr->seuraava = ptrUusi;
-
-
 
         }
 
@@ -144,7 +128,7 @@ int main(int argc, char* argv[]) {
     const char x[2] = " ";
     char puskuri[40];
     FILE *tiedosto;
-    int i = 1, n;
+    int n;
 
     if (argc == 1) {
 
@@ -168,13 +152,10 @@ int main(int argc, char* argv[]) {
 
             while (fgets(puskuri, 41, tiedosto) != NULL) {
 
-                printf("%s", puskuri);
                 n = 0;
 
                 token = strtok(puskuri, x);
                 while(token) {
-
-                        puts(token);
 
                         if (n == 0) {
 
@@ -192,24 +173,17 @@ int main(int argc, char* argv[]) {
 
                 }
 
-
-
-                printf("%s\t%d\n", merkki, vuosi);
-
-
                 z = varaaMuistia(&pA, merkki, vuosi);
-                printf("Muisti varattu?!\n");
+
                 if ( z == 1 ) {
 
                     printf("Muistin varaus epäonnistui.\n");
-                    exit(1);
+                    exit(0);
                 }
 
                 else if (z == 0) {
 
-                    printf("%d\n", i);
-                    i = i+1;
-
+                    continue;
 
                 }
 
@@ -225,5 +199,5 @@ int main(int argc, char* argv[]) {
     fflush(tiedosto);
     fclose(tiedosto);
     return 0;
-    
+
 }
