@@ -21,13 +21,13 @@
 
 typedef struct ajoneuvo *ajoneuvoOsoitin;
 
-int varaaMuistia(ajoneuvoOsoitin* pA, char *merkki, int vuosi) {
+int varaaMuistia(ajoneuvoOsoitin *pA, char *merkki, int vuosi) {
 
     struct ajoneuvo *ptrUusi = NULL;
     struct ajoneuvo *ptr = NULL;
 
     printf("Muistinvarauksessa\n");
-    printf("%s,%s,%d\n", pA, merkki, vuosi);
+    printf("%s,%d\n", merkki, vuosi);
 
     if ((ptrUusi=(struct ajoneuvo*)malloc(sizeof(struct ajoneuvo))) == NULL ) {
 
@@ -43,22 +43,25 @@ int varaaMuistia(ajoneuvoOsoitin* pA, char *merkki, int vuosi) {
         ptrUusi->autoMerkki = malloc(sizeof(*merkki));
         printf("varattiin vähän lisää\n");
         strcpy(ptrUusi->autoMerkki, merkki);
+
         ptrUusi->vuosiMalli = vuosi;
+
         ptrUusi->seuraava = NULL;
 
-        if (pA == NULL) {
+
+        if (*pA == NULL) {
 
             printf("alun säätö\n");
 
             printf("%s,%d\n", ptrUusi->autoMerkki, ptrUusi->vuosiMalli);
             perror("alkuhelvetti");
-            pA = ptrUusi;
+            *pA = ptrUusi;
             perror("helvetti");
 
         }
 
         else {
-
+            printf("asd4\n");
             ptr = *pA;
 
             printf("Muun säätö\n");
@@ -67,9 +70,11 @@ int varaaMuistia(ajoneuvoOsoitin* pA, char *merkki, int vuosi) {
 
                 ptr = ptr->seuraava;
 
-            }
 
+            }
+            printf("asd7\n");
             ptr->seuraava = ptrUusi;
+
 
 
         }
@@ -82,9 +87,9 @@ int varaaMuistia(ajoneuvoOsoitin* pA, char *merkki, int vuosi) {
 
 
 
-void tulostaAjoneuvot(ajoneuvoOsoitin* pA) {
+void tulostaAjoneuvot(ajoneuvoOsoitin pA) {
 
-    struct ajoneuvo *ptr = *pA;
+    struct ajoneuvo *ptr = pA;
 
     if (ptr == NULL) {
 
@@ -97,7 +102,7 @@ void tulostaAjoneuvot(ajoneuvoOsoitin* pA) {
       printf("AUTO\tVUOSI\n");
       while (ptr != NULL) {
 
-          printf("%d\t%s\n", ptr->autoMerkki, ptr->vuosiMalli);
+          printf("%s\t%d\n", ptr->autoMerkki, ptr->vuosiMalli);
           ptr = ptr->seuraava;
 
       }
@@ -107,9 +112,9 @@ void tulostaAjoneuvot(ajoneuvoOsoitin* pA) {
 }
 
 
-void vapautaMuisti(ajoneuvoOsoitin* pA) {
+void vapautaMuisti(ajoneuvoOsoitin pA) {
 
-    struct ajoneuvo *ptr = *pA;
+    struct ajoneuvo *ptr = pA;
 
     if (ptr == NULL) {
 
@@ -121,18 +126,18 @@ void vapautaMuisti(ajoneuvoOsoitin* pA) {
 
         while(ptr != NULL) {
 
-            *pA = ptr->seuraava;
+            pA = ptr->seuraava;
             free(ptr);
-            ptr = *pA;
+            ptr = pA;
 
         }
 
     }
 
 }
-char main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 
-    ajoneuvoOsoitin* pA = NULL;
+    ajoneuvoOsoitin pA = NULL;
     int vuosi;
     int z;
     char *merkki, *token;
@@ -192,7 +197,8 @@ char main(int argc, char* argv[]) {
                 printf("%s\t%d\n", merkki, vuosi);
 
 
-                z = varaaMuistia(pA, merkki, vuosi);
+                z = varaaMuistia(&pA, merkki, vuosi);
+                printf("Muisti varattu?!\n");
                 if ( z == 1 ) {
 
                     printf("Muistin varaus epäonnistui.\n");
@@ -218,5 +224,6 @@ char main(int argc, char* argv[]) {
 
     fflush(tiedosto);
     fclose(tiedosto);
-
+    return 0;
+    
 }
