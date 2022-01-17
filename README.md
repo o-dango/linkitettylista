@@ -1,2 +1,2 @@
-# linkitettylistasaatana
+# linkitettylista
 linkitetty lista kommentteineen
